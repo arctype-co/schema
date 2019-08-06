@@ -249,7 +249,7 @@
                                (when-let [error# (@~input-checker-sym args#)]
                                  (error! (utils/format* "Input to %s does not match schema: \n\n\t \033[0;33m  %s \033[0m \n\n"
                                                         '~fn-name (pr-str error#))
-                                         {:schema ~input-schema-sym :value args# :error error#})))))
+                                         {:schema ~input-schema-sym :error error#})))))
                          (let [o# (loop ~(into (vec (interleave (map #(with-meta % {}) bind) bind-syms))
                                                (when rest-arg [rest-arg rest-sym]))
                                     ~@(apply-prepost-conditions body))]
@@ -263,7 +263,7 @@
                                (when-let [error# (@~output-checker-sym o#)]
                                  (error! (utils/format* "Output of %s does not match schema: \n\n\t \033[0;33m  %s \033[0m \n\n"
                                                         '~fn-name (pr-str error#))
-                                         {:schema ~output-schema-sym :value o# :error error#}))))
+                                         {:schema ~output-schema-sym :error error#}))))
                            o#))))
                    (cons (into regular-args (when rest-arg ['& rest-arg]))
                          body))}))
